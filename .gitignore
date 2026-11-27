@@ -1,0 +1,21 @@
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.old
+
+# Environment, Credentials & Logs
+.env
+.env.*
+*.log
+*firebase-adminsdk*.json
+*.db
+*.sqlite
+*.sqlite3
