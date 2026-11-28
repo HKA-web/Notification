@@ -46,6 +46,10 @@ class NtfyEngine:
             headers['Markdown'] = 'yes'
         if data_dict.get('actions'):
             headers['Actions'] = str(data_dict['actions'])
+        if data_dict.get('attach'):
+            headers['Attach'] = str(data_dict['attach'])
+        if data_dict.get('filename'):
+            headers['Filename'] = str(data_dict['filename'])
 
         logger.info(f'[NTFY SEND] POST {endpoint}')
         response = requests.post(

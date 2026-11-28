@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
+from django.core.management import call_command
 from django.test import SimpleTestCase
 
 from notification.engine import get_engine
@@ -81,7 +82,12 @@ class NotificationEngineTest(SimpleTestCase):
             title='Alert',
             message='Disk full',
             url='https://status.example.com',
-            data={'priority': 'high', 'tags': ['warning', 'floppy_disk']},
+            data={
+                'priority': 'high',
+                'tags': ['warning', 'floppy_disk'],
+                'attach': 'https://picsum.photos/800/400',
+                'filename': 'disk.jpg',
+            },
         )
 
         result = NtfyEngine().send(outbox, provider)
@@ -96,6 +102,8 @@ class NotificationEngineTest(SimpleTestCase):
         self.assertEqual(kwargs['headers']['Priority'], 'high')
         self.assertEqual(kwargs['headers']['Tags'], 'warning,floppy_disk')
         self.assertEqual(kwargs['headers']['Click'], 'https://status.example.com')
+        self.assertEqual(kwargs['headers']['Attach'], 'https://picsum.photos/800/400')
+        self.assertEqual(kwargs['headers']['Filename'], 'disk.jpg')
 
     @patch('notification.engine.ntfy.client.requests.post')
     def test_ntfy_handles_http_error(self, mock_post):
@@ -111,3 +119,15 @@ class NotificationEngineTest(SimpleTestCase):
 
         self.assertFalse(result['success'])
         self.assertEqual(result['error']['status_code'], 403)
+
+    @patch('notification.management.commands.runntfy.subprocess.run')
+    @patch('notification.management.commands.runntfy.Command._resolve_ntfy_binary', return_value='C:/bin/ntfy.exe')
+    def test_runntfy_command_invokes_portable_binary(self, _mock_bin, mock_run):
+        call_command('runntfy', port=8085)
+
+        mock_run.assert_called_once()
+        cmd = mock_run.call_args[0][0]
+        self.assertEqual(cmd[0], 'C:/bin/ntfy.exe')
+        self.assertIn('serve', cmd)
+        self.assertIn(':8085', cmd)
+

@@ -1,0 +1,17 @@
+# Konfigurasi Self-Hosted ntfy (Portable, Tanpa Login untuk Testing Lokal)
+listen-http: ":8085"
+base-url: "http://127.0.0.1:8085"
+
+# Penyimpanan cache pesan & lampiran lokal (diabaikan oleh git)
+cache-file: "notification/engine/ntfy/data/cache.db"
+attachment-cache-dir: "notification/engine/ntfy/data/attachments"
+
+# Aktifkan jika di-expose di belakang Nginx / reverse proxy HTTPS
+behind-proxy: true
+
+# Firebase Cloud Messaging (untuk wakeup Android saat app di-kill)
+firebase-key-file: "notification/engine/ntfy/hkagroup-a5c39-firebase-adminsdk-fbsvc-446b184b47.json"
+
+# --- Opsional: Aktifkan saat naik ke production ---
+# auth-file: "notification/engine/ntfy/data/user.db"
+# auth-default-access: "deny-all"

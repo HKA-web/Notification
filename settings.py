@@ -11,6 +11,7 @@ DEFAULTS = dict(
     SCHEMA=ApplicationConfig.name,
     ONESIGNAL_BASE_URL=getattr(djangosettings, 'NOTIFICATION.ONESIGNAL_BASE_URL', 'https://api.onesignal.com'),
     NTFY_BASE_URL=getattr(djangosettings, 'NOTIFICATION.NTFY_BASE_URL', 'https://ntfy.sh'),
+    NTFY_PORT=getattr(djangosettings, 'NOTIFICATION.NTFY_PORT', 8085),
     TIMEOUT=getattr(djangosettings, 'NOTIFICATION.TIMEOUT', 30),
     OUTBOX=dict(
         RETRY=3,
